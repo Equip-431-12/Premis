@@ -13,13 +13,13 @@ function mostrar_menu() {
     echo "---------------------------------------------------------"
     echo -n "Selecciona una opció: "
 }
+
 function enDesenvolupament() {
     clear
     echo "En desenvolupament"
     read -n 1 -s -r -p "Prem qualsevol tecla per continuar..."
     clear
 }
-
 
 function opcioNoValida() {
     clear
@@ -28,6 +28,40 @@ function opcioNoValida() {
     clear
 }
 
+function menu_llistat() {
+    while true; do
+        clear
+        echo "--------------------------------------------------"
+        echo "1 - Llistats del catàleg."
+        echo "--------------------------------------------------"
+        echo "1 Llistat d’actors i actrius per data del premi."
+        echo "2 Llistat alfabètic de pel·lícules."
+        echo "3 Llistat per edat d’actors i actrius."
+        echo "0 Tornar al menú anterior."
+        echo "--------------------------------------------------"
+        echo -n "Selecciona una opció: "
+        
+        read subopcio
+        case $subopcio in
+            1)
+                bash ./tasca1_1.sh "$1" "$2"
+                ;;
+            2)
+                bash ./tasca1_2.sh "$1" "$2"
+                ;;
+            3)
+                bash ./tasca1_3.sh "$1" "$2"
+                ;;
+            0)
+                clear
+                return
+                ;;
+            *)
+                opcioNoValida
+                ;;
+        esac
+    done
+}
 
 function main() {
     while true; do
@@ -35,7 +69,10 @@ function main() {
         read opcio
 
         case $opcio in
-            1|2|3|4)
+            1)
+                menu_llistat "$1" "$2"
+                ;;
+            2|3|4)
                 enDesenvolupament
                 ;;
             0)
@@ -50,11 +87,9 @@ function main() {
     done
 }
 
-
 if [[ $# -ne 2 ]]; then
     echo "Ús: $0 <nom-BD-actors> <nom-BD-actrius>"
     exit 1
 fi
 
-
-main
+main "$1" "$2"
