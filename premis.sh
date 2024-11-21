@@ -28,6 +28,49 @@ function opcioNoValida() {
     clear
 }
 
+function menu_cataleg(){
+while true; do
+    echo "------------------------------------------"
+    echo "2 - Cerca al catàleg."
+    echo "------------------------------------------"
+    echo "1 Qui va guanyar durant els anys ...?"
+    echo "2 Qui va guanyar amb la pel·lícula ...?"
+    echo "3 Pel·lícules guanyades per ...?"
+    echo "0 Tornar al menú anterior"
+    echo "------------------------------------------"
+    read -p "Seleccioneu una opció: " opcio
+
+    case $opcio in
+        1)
+            read -p "Introduïu l'any d'inici: " any1
+            read -p "Introduïu l'any final: " any2
+            if [[ $any1 -le $any2 ]]; then
+                bash ./tasca2-1.sh "$1" "$2" "$any1" "$any2"
+            else
+                echo "L'any d'inici ha de ser menor o igual al final."
+            fi
+            ;;
+        2)
+            read -p "Introduïu una cadena de caràcters pel títol de la pel·lícula: " titol
+            bash ./tasca2-2.sh "$1" "$2" "$titol"
+            ;;
+        3)
+            read -p "Introduïu una cadena de caràcters pel nom de la persona: " nom
+            bash ./tasca2-3.sh "$1" "$2" "$nom"
+            ;;
+        0)
+            echo "Tornant al menú anterior..."
+            exit 0
+            ;;
+        *)
+            echo "Opció no vàlida."
+            ;;
+    esac
+done
+
+
+}
+
 function menu_llistat() {
     while true; do
         clear
@@ -72,12 +115,15 @@ function main() {
             1)
                 menu_llistat "$1" "$2"
                 ;;
-            2|3|4)
-                enDesenvolupament
+            2)
+                menu_cataleg "$1" "$2"
                 ;;
+	    3|4)
+		enDesenvolupament
+		;;
             0)
                 clear
-                echo "Gràcies per visitar 'Amor pel Setè Art'"
+		echo "Gracies per visitar 'Amor pel sete Art'"
                 exit 0
                 ;;
             *)
@@ -91,5 +137,3 @@ if [[ $# -ne 2 ]]; then
     echo "Ús: $0 <nom-BD-actors> <nom-BD-actrius>"
     exit 1
 fi
-
-main "$1" "$2"
